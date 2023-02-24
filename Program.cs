@@ -1,15 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using NetProviders.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<PostDbContext>(options =>
+{
+    options.UseMySql(builder.Configuration.GetConnectionString("NetProductsDB"), Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.25-mariadb"));
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
